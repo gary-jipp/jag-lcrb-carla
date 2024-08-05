@@ -1,0 +1,26 @@
+body,
+html {
+  height: 96%;
+  margin: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.verify {
+  padding: 10px;
+  width: 40em;
+  height: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+div.found {
+  background-color: green;
+  color: white;
+}
+
+div.notfound {
+  background-color: orange;
+}

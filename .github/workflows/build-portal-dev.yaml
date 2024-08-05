@@ -1,4 +1,4 @@
-name: Portal & API - Development build
+name: Portal & API - Build
 on:
   workflow_dispatch:
 defaults:

@@ -1,0 +1,97 @@
+#
+# OpenShift template for image build in the tools namespace
+#
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  name: orgbook-app
+
+parameters:
+- name: APP_NAME
+  description: The name of the application
+  required: true
+  value: orgbook-app
+- name: SOURCE_REPOSITORY_URL
+  description: Source Repository
+  required: true
+  value: https://github.com/gary-jipp/jag-lcrb-carla
+- name: SOURCE_REPOSITORY_REF
+  description: Source Repository
+  required: true
+  value: feature-orgbook-app
+- name: CONTEXT_DIR
+  description: Source Directory
+  required: true
+  value: /orgbook-app
+- name: FROM_IMAGE_NAME
+  description: Base Docker Image Name
+  required: true
+  value: node
+- name: FROM_IMAGE_TAG
+  description: Base  Docker Image Variant
+  required: true
+  value: 18-alpine
+- name: DEST_IMAGE_TAG
+  description: The image tag  created
+  required: true
+  value: dev
+
+objects:
+
+- apiVersion: image.openshift.io/v1
+  kind: ImageStream
+  metadata:
+    name: ${FROM_IMAGE_NAME}
+
+  spec:
+    lookupPolicy:
+      local: true
+    tags:
+    - name: ${FROM_IMAGE_TAG}
+      from:
+        kind: DockerImage
+        name: ${FROM_IMAGE_NAME}:${FROM_IMAGE_TAG}
+
+- apiVersion: image.openshift.io/v1
+  kind: ImageStream
+  metadata:
+    name: ${APP_NAME}
+  spec:
+    lookupPolicy:
+      local: true
+
+- apiVersion: build.openshift.io/v1
+  kind: BuildConfig
+  metadata:
+    labels:
+      app: ${APP_NAME}
+    name: ${APP_NAME}
+  spec:
+    source:
+      contextDir: ${CONTEXT_DIR}
+      git:
+        uri: ${SOURCE_REPOSITORY_URL}
+        ref: ${SOURCE_REPOSITORY_REF}
+    strategy:
+      dockerStrategy:
+        from:
+          kind: ImageStreamTag
+          name: ${FROM_IMAGE_NAME}:${FROM_IMAGE_TAG}
+        env:
+          - name: BUILD_NUMBER
+            valueFrom:
+                fieldRef:
+                  fieldPath: metadata.annotations['openshift.io/build.number']
+    triggers:
+      - type: ConfigChange
+    output:
+      to:
+        kind: ImageStreamTag
+        name: ${APP_NAME}:${DEST_IMAGE_TAG}
+    resources:
+      limits:
+        cpu: "2048m"
+        memory: "1Gi"
+      requests:
+        cpu: "500m"
+        memory: "512Mi"

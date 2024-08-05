@@ -1,0 +1,122 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  name: teleplan-web
+
+parameters:
+- name: APP_NAME
+  description: The name of the application
+  required: true
+  value: orgbook-app
+- name: IMAGE_NAMESPACE
+  description: Namespace containing builds
+  required: true
+  value: b7aa30-tools
+- name: SOURCE_IMAGE_NAME
+  description: The name of the source image.
+  displayName: Source Image Name
+  value: orgbook-app
+  required: true
+- name: SOURCE_TAG
+  description: The tag of the source image.
+  displayName: Source Tag
+  required: true
+- name: SECRETS
+  description: Secrets to use
+  required: true
+  value: orgbook-app
+- name: CONFIG_MAP
+  description: ConfigMap name to use
+  required: true
+  value: orgbook-app
+
+objects:
+
+- kind: Service
+  apiVersion: v1
+  metadata:
+    name: ${APP_NAME}
+    labels:
+      app: ${APP_NAME}
+  spec:
+    ipFamilies:
+      - IPv4
+    ports:
+      - name: 8080-tcp
+        protocol: TCP
+        port: 8080
+        targetPort: 8080
+    type: ClusterIP
+    selector:
+      deploymentconfig: ${APP_NAME}
+
+- kind: Route
+  apiVersion: route.openshift.io/v1
+  metadata:
+    name: ${APP_NAME}
+    labels: {}
+  spec:
+    to:
+      kind: Service
+      name: ${APP_NAME}
+    tls: null
+    port:
+      targetPort: 8080
+    tls:
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect
+    wildcardPolicy: None
+
+# Need to create PVC before deployment. Do this manually
+# - kind: PersistentVolumeClaim
+#   apiVersion: v1
+#   metadata:
+#     name: ${STORAGE_CLAIM}
+#   spec:
+#     accessModes:
+#       - ReadWriteMany
+#     resources:
+#       requests:
+#         storage: ${STORAGE_SIZE}
+
+- apiVersion: apps.openshift.io/v1
+  kind: DeploymentConfig
+  metadata:
+    labels:
+      app: ${APP_NAME}
+    name: ${APP_NAME}
+  spec:
+    strategy:
+      type: Rolling
+    triggers:
+      - type: ConfigChange
+      - type: ImageChange
+        imageChangeParams:
+          automatic: true
+          containerNames:
+            - ${APP_NAME}
+          from:
+            kind: ImageStreamTag
+            name: ${SOURCE_IMAGE_NAME}:${SOURCE_TAG}
+            namespace: ${IMAGE_NAMESPACE}
+    replicas: 2
+    selector:
+      deploymentconfig: ${APP_NAME}
+    template:
+      metadata:
+        labels:
+          app: ${APP_NAME}
+          deploymentconfig: ${APP_NAME}
+      spec:
+        containers:
+          - name: ${APP_NAME}
+            image: ${IMAGE_NAMESPACE}/${SOURCE_IMAGE_NAME}:${SOURCE_TAG}
+
+            ports:
+              - containerPort: 8080
+                protocol: TCP
+            envFrom:
+              - configMapRef:
+                  name: ${CONFIG_MAP}
+              # - secretRef:
+              #     name: ${SECRETS}
