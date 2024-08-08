@@ -17,14 +17,17 @@ app.get("/version", (req, res) => {
 
 app.get("/verify/:id", (req, res) => {
   const id = req.params.id;
-  const url = "https://myweedstore.ca";
 
   if (id === "BC123456") {
-    res.render("found", {id, url});
+    const name = "Downtown Cannabis";
+    const urls = ["http://www.cannabis.com", "http://www.cannabis2.com"];
+    res.render("found", {id, name, urls});
     return;
   }
 
-  res.render("notfound", {id, url});
+  const urls = ["http://www.unknown.com"];
+  const name = "Black Market Cannabis";
+  res.render("notfound", {id, name, urls});
 });
 
 app.listen(PORT, () => {

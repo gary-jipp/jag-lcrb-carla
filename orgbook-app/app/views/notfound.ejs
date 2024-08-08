@@ -4,19 +4,51 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="/images/bcgov.png" type="image/x-icon"/>
-    <title>Licensed Organization Found</title>
+    <link rel="icon" href="/images/icon.png" type="image/x-icon"/>
+    <title>Not Licensed</title>
 
-    <link rel="stylesheet" href="/styles/main.css" />
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+      .error-circle {
+        background-color: #FF4136;
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 2rem auto;
+      }
+
+      .error-mark {
+        color: white;
+        font-size: 3rem;
+      }
+    </style>
   </head>
 
-  <body>
-    <div class="verify notfound">
-      This Organization cannot be Verified as a Licensed Cannibas Retail Outlet
-      <br>
-        Url: <%= url %>
-    </div>
+  <body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="bg-white p-8 rounded-lg shadow-lg max-w-md text-center">
+      <h1 class="text-xl font-semibold">
+        <%=name%> does not appear to be an active licensed Cannabis Retailer
+      </h1>
+      <div class="error-circle">
+        <i class="error-mark">✕</i>
+      </div>
+      <p>The following is a list of Website URL's associated with this record:</p>
 
+      <% for (const url of urls) {%>
+
+        <a href="<%=url%>" class="text-blue-500 hover:underline">
+          <%=url%>
+        </a><br>
+
+     <%}%>
+
+      <p class="text-xs mt-4">*This verification is provided by the British Columbia Liquor and Cannabis Regulation
+        Branch without warranty and subject to the following Terms of Service. You assume all liability using this
+        service. For support, please visit LCRB's website.</p>
+    </div>
   </body>
 
 </html>
