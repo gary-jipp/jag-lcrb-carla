@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/images/icon.png" type="image/x-icon" />
+    <title>AR Cannabis License Verification</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+      .clock-icon-container {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 1rem;
+      }
+
+      .clock-icon {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background-color: orange;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .clock-icon svg {
+        width: 60px;
+        height: 60px;
+        color: white;
+      }
+    </style>
+  </head>
+
+  <body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="bg-white p-8 rounded-lg shadow-lg max-w-md text-center">
+      <h1 class="text-xl font-semibold">We are experiencing technical difficulties with this request and are unable to
+        verify at this time. Please try again a little later.</h1><br />
+
+      <div class="clock-icon-container">
+        <div class="clock-icon">
+          <!-- White clock outline on orange background -->
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" />
+            <path stroke="currentColor" d="M12 7v5l3 3" />
+          </svg>
+        </div>
+      </div>
+
+      <p class="text-xs mt-4">*This verification is provided by the British Columbia Liquor and Cannabis Regulation
+        Branch without warranty and subject to the following Terms of Service. You assume all liability using this
+        service. For support, please visit LCRB's website.</p>
+    </div>
+  </body>
+
+</html>

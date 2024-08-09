@@ -18,6 +18,11 @@ app.get("/version", (req, res) => {
 app.get("/verify/:id", (req, res) => {
   const id = req.params.id;
 
+  if (id === "BC000000") {
+    res.render("error");
+    return;
+  }
+
   if (id === "BC123456") {
     const name = "Downtown Cannabis";
     const urls = ["http://www.cannabis.com", "http://www.cannabis2.com"];
