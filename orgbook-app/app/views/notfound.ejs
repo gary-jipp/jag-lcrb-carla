@@ -30,19 +30,12 @@
   <body class="bg-gray-100 flex items-center justify-center min-h-screen">
     <div class="bg-white p-8 rounded-lg shadow-lg max-w-md text-center">
       <h1 class="text-xl font-semibold">
-        <%=name%> does not appear to be an active licensed Cannabis Retailer
+        This organizagtion not appear to be an active licensed Cannabis Retailer
       </h1>
       <div class="error-circle">
         <i class="error-mark">✕</i>
       </div>
-      <p>The following is a list of Website URL's associated with this record:</p>
-
-      <% for (const url of urls) {%>
-
-        <a href="<%=url%>" class="text-blue-500 hover:underline">
-          <%=url%>
-        </a><br>
-
+      
      <%}%>
 
       <p class="text-xs mt-4">*This verification is provided by the British Columbia Liquor and Cannabis Regulation
