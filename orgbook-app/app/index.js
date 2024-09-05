@@ -25,7 +25,7 @@ app.get("/verify/:id", (req, res) => {
 
   if (id === "BC123456") {
     const name = "Stony Island";
-    const urls = ["http://www.stonyisland.store"];
+    const urls = ["https://stonyisland.store", "http://www.stonyisland.store"];
     res.render("found", {id, name, urls});
     return;
   }
