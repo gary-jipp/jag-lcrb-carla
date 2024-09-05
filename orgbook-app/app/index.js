@@ -24,8 +24,8 @@ app.get("/verify/:id", (req, res) => {
   }
 
   if (id === "BC123456") {
-    const name = "Downtown Cannabis";
-    const urls = ["http://www.cannabis.com", "http://www.cannabis2.com"];
+    const name = "Stony Island";
+    const urls = ["http://www.stonyisland.store"];
     res.render("found", {id, name, urls});
     return;
   }
